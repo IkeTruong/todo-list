@@ -1,14 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, memo } from 'react'
 import { List, AutoSizer } from 'react-virtualized'
+
 import _get from 'lodash/get'
-// import _map from 'lodash/map'
 import _filter from 'lodash/filter'
 
-import Grid from '@mui/material/Grid'
-
 import TaskCard from 'src/components/TaskCard'
-import ConfirmDialog from 'src/components/Dialog/ConfirmDialog'
+import DeleteDialog from 'src/containers/FormDialog/DeleteDialog'
 import EditFormDialog from 'src/containers/FormDialog/EditFormDialog'
 import DeleteButton from 'src/components/Button/DeleteButton'
 import EditButton from 'src/components/Button/EditButton'
@@ -39,7 +37,9 @@ function TaskList(props) {
   const onEdit = () => {
     setFormEdit(false)
   }
+
   const dataRoot = JSON.parse(localStorage.getItem('todo-list'))
+
   const onDelete = (id, index) => {
     setDelDialog(false)
     setTodos(_filter(dataRoot, (todo) => todo.id !== id))
@@ -48,6 +48,7 @@ function TaskList(props) {
   }
 
   const onUpdate = (id, updateTask) => {
+    console.log('id, updateTask', id, updateTask)
     const updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
         return { ...todo, ...updateTask }
@@ -55,31 +56,33 @@ function TaskList(props) {
       return todo
     })
     setTodos(updatedTodos)
-    // localStorage.setItem('todo-list', JSON.stringify(todos))
+    localStorage.setItem('todo-list', JSON.stringify(updatedTodos))
   }
 
   const taskDetail = _filter(todos, (todo) => todo.id === id)[0]
 
   const rowRenderer = ({ index, key, style }) => {
     return (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={key} style={style}>
+      <div key={key} style={style}>
         <TaskCard
-          title={_get(dataRoot[index], 'title')}
-          description={_get(dataRoot[index], 'description')}
-          priority={_get(dataRoot[index], 'priority')}
-          completionStatus={_get(dataRoot[index], 'completionStatus')}
+          title={_get(todos[index], 'title')}
+          description={_get(todos[index], 'description')}
+          priority={_get(todos[index], 'priority')}
+          completionStatus={_get(todos[index], 'completionStatus')}
           actions={
             <React.Fragment>
-              <EditButton />
+              <EditButton
+                onFormEdit={() => onOpenFormEdit(_get(todos[index], 'id'))}
+              />
               <DeleteButton
                 onConfirm={() =>
-                  onOpenDelDialog(_get(dataRoot[index], 'id'), index)
+                  onOpenDelDialog(_get(todos[index], 'id'), index)
                 }
               />
             </React.Fragment>
           }
         />
-      </Grid>
+      </div>
     )
   }
 
@@ -109,7 +112,7 @@ function TaskList(props) {
         handleChange={onEdit}
         updateTodo={onUpdate}
       />
-      <ConfirmDialog
+      <DeleteDialog
         open={openDelDialog}
         taskTitle={_get(taskDetail, 'title')}
         onCancel={onCloseDelDialog}

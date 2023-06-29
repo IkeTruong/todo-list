@@ -1,9 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { v4 as uuidv4 } from 'uuid'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
 import { styled } from '@mui/material/styles'
 
 import Dialog from '@mui/material/Dialog'
@@ -13,9 +9,6 @@ import DialogActions from '@mui/material/DialogActions'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import CloseIcon from '@mui/icons-material/Close'
-
-import RadioController from 'src/components/RadioController'
-import InputController from 'src/components/InputController'
 import { NormalizeButton } from 'src/components/Button/NormalizeButton'
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -56,32 +49,8 @@ StyledDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 }
 
-const validationSchema = yup.object().shape({
-  title: yup.string().required('Title is required'),
-  description: yup.string().required('Description is required'),
-  priority: yup.string().required('Priority is required'),
-  completionStatus: yup.string().required('Completion status is required'),
-})
-
-export default function FormDialog(props) {
-  const { open, onClose, createTodo } = props
-  const defaultValues = {
-    title: '',
-    description: '',
-    priority: '',
-    completionStatus: '',
-  }
-  const { handleSubmit, control, reset } = useForm({
-    resolver: yupResolver(validationSchema),
-    defaultValues,
-  })
-
-  const onSubmit = (evt) => {
-    createTodo(evt)
-    reset(defaultValues)
-    onClose()
-  }
-
+export default function CustomDialog(props) {
+  const { open, title, txtBtn, content, handleSubmit, onClose } = props
   return (
     <StyledDialog
       onClose={() => {
@@ -93,46 +62,22 @@ export default function FormDialog(props) {
       fullWidth
     >
       <StyledDialogTitle id="customized-dialog-title" onClose={onClose}>
-        Add New Task
+        {title}
       </StyledDialogTitle>
       <DialogContent>
         <Stack spacing={2} pt={1}>
-          <InputController name="title" label="Title" control={control} />
-          <InputController
-            name="description"
-            label="Description"
-            control={control}
-          />
-          <RadioController
-            control={control}
-            name="priority"
-            label="Priority"
-            options={['high', 'medium', 'low']}
-          />
-          <RadioController
-            control={control}
-            name="completionStatus"
-            label="Completion Status"
-            options={['todo', 'processing', 'pending', 'done']}
-          />
+          {content}
         </Stack>
       </DialogContent>
       <DialogActions>
         <NormalizeButton
           variant="contained"
           disableElevation
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit}
         >
-          Create task
+          {txtBtn}
         </NormalizeButton>
       </DialogActions>
     </StyledDialog>
   )
-}
-
-FormDialog.propTypes = {
-  idEdit: PropTypes.bool,
-  open: PropTypes.bool,
-  onClose: PropTypes.func,
-  handleChange: PropTypes.func,
 }

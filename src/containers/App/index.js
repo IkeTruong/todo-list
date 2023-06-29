@@ -12,7 +12,7 @@ import TaskList from 'src/containers/TaskList'
 import SearchTask from 'src/containers/SearchTask'
 import FilterTask from 'src/containers/FilterTask'
 import AddButton from 'src/components/Button/AddButton'
-import FormDialog from 'src/containers/FormDialog'
+import AddFormDialog from 'src/containers/FormDialog/AddFormDialog'
 
 // import { data } from 'src/assets/data'
 
@@ -74,7 +74,11 @@ export default function App() {
           </Grid>
           <Grid item xs={12}>
             <Stack direction="row" spacing={1}>
-              <SearchTask onChange={(event) => setQuery(event.target.value)} />
+              <SearchTask
+                onChange={(event) => setQuery(event.target.value)}
+                onClear={() => setQuery('')}
+                value={query}
+              />
             </Stack>
           </Grid>
           <Grid item xs={12}>
@@ -99,7 +103,7 @@ export default function App() {
             />
           </Grid>
         </Grid>
-        <FormDialog
+        <AddFormDialog
           open={openForm}
           onClose={handleCloseForm}
           createTodo={onCreate}

@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 
 import { NormalizeButton } from 'src/components/Button/NormalizeButton'
 
-export default function ConfirmDialog(props) {
+export default function DeleteDialog(props) {
   const { open, taskTitle, onCancel, onDelete } = props
   return (
     <Dialog
@@ -47,7 +47,7 @@ export default function ConfirmDialog(props) {
   )
 }
 
-ConfirmDialog.propTypes = {
+DeleteDialog.propTypes = {
   open: PropTypes.bool,
   taskTitle: PropTypes.string,
   onCancel: PropTypes.func,
