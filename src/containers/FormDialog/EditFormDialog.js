@@ -12,7 +12,7 @@ import { priorityOpts, statusOpts } from 'src/assets/variables'
 import { validationSchema } from 'src/assets/scheme'
 
 function CustomizedDialogs(props) {
-  const { open, onClose, taskInfo, updateTodo } = props
+  const { open, onClose, taskInfo, updateTodo, editType } = props
   const { handleSubmit, control, reset } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
@@ -38,6 +38,8 @@ function CustomizedDialogs(props) {
     reset(defaultVal)
   }, [taskInfo, reset])
 
+  const disable = editType !== null
+
   return (
     <CustomDialog
       open={open}
@@ -45,23 +47,31 @@ function CustomizedDialogs(props) {
       txtBtn="Save changes"
       content={
         <>
-          <InputController name="title" label="Title" control={control} />
+          <InputController
+            name="title"
+            label="Title"
+            control={control}
+            disabled={disable}
+          />
           <InputController
             name="description"
             label="Description"
             control={control}
+            disabled={disable}
           />
           <RadioController
             control={control}
             name="priority"
             label="Priority"
             options={priorityOpts}
+            disabled={editType === 'eStatus'}
           />
           <RadioController
             control={control}
             name="completionStatus"
             label="Completion Status"
             options={statusOpts}
+            disabled={editType === 'ePriority'}
           />
         </>
       }

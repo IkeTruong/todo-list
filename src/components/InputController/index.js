@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 
 export default function InputController(props) {
-  const { control, name, label, rest } = props
+  const { control, name, label, ...rest } = props
   return (
     <Controller
       name={name}

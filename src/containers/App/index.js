@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import _filter from 'lodash/filter'
 
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
@@ -13,7 +12,8 @@ import SearchTask from 'src/containers/SearchTask'
 import FilterTask from 'src/containers/FilterTask'
 import AddButton from 'src/components/Button/AddButton'
 import AddFormDialog from 'src/containers/FormDialog/AddFormDialog'
-
+import NotificationAlert from 'src/components/NotificationAlert'
+import { NormalizeButton } from 'src/components/Button/NormalizeButton'
 // import { data } from 'src/assets/data'
 
 export default function App() {
@@ -21,26 +21,23 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [todos, setTodos] = useState([])
   const [filter, setCondFilter] = useState('all')
-
-  const handleOpenForm = () => {
-    setOpenForm(true)
-  }
-  const handleCloseForm = () => {
-    setOpenForm(false)
+  const [showNoti, setShow] = useState(false)
+  // function open/close create task form
+  const handleForm = () => {
+    setOpenForm(!openForm)
   }
 
+  // function create new task, then set it into localstorage
   const onCreate = (newTodo) => {
     setTodos([newTodo, ...todos])
+    setShow(true)
     localStorage.setItem('todo-list', JSON.stringify([newTodo, ...todos]))
   }
 
+  // get data in localstorage
   const dataLocalStorage = JSON.parse(localStorage.getItem('todo-list'))
 
-  const filterTodos = _filter(
-    dataLocalStorage,
-    (todo) => todo.completionStatus === filter
-  )
-
+  // todo list by text search
   const searchTodos = _filter(dataLocalStorage, (todo) => {
     if (query === '') {
       return todo
@@ -52,6 +49,23 @@ export default function App() {
     }
   })
 
+  // todo list filter by status
+  const filterTodos = _filter(
+    searchTodos || dataLocalStorage,
+    (todo) => todo.completionStatus === filter
+  )
+
+  // function reset search, filter value
+  const onReset = () => {
+    setQuery('')
+    setCondFilter('all')
+  }
+
+  // function clear text input search
+  const onClear = () => {
+    setQuery('')
+  }
+  // listen if has data in localstorage, set data
   useEffect(() => {
     const todos = JSON.parse(localStorage.getItem('todo-list'))
     if (todos) {
@@ -64,51 +78,62 @@ export default function App() {
   // }, [todos])
 
   return (
-    <Container maxWidth="xl">
-      <Box py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Typography align="center" variant="h2">
-              <b>Todo List</b>
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack direction="row" spacing={1}>
-              <SearchTask
-                onChange={(event) => setQuery(event.target.value)}
-                onClear={() => setQuery('')}
-                value={query}
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid
-              container
-              spacing={2}
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid item xs={6} md={4} lg={3}>
-                <AddButton onAdd={handleOpenForm} />
-              </Grid>
-              <Grid item xs={6} md={4} lg={3}>
-                <FilterTask setCondFilter={setCondFilter} />
+    <>
+      <Container maxWidth="xl">
+        <Box py={3} position="relative">
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography align="center" variant="h2">
+                <b>Todo List</b>
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={6} md={3}>
+                  <SearchTask
+                    onChange={(event) => setQuery(event.target.value)}
+                    onClear={onClear}
+                    value={query}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <FilterTask setCondFilter={setCondFilter} filter={filter} />
+                </Grid>
+                <Grid item>
+                  <NormalizeButton
+                    variant="contained"
+                    disableElevation
+                    onClick={onReset}
+                  >
+                    Reset
+                  </NormalizeButton>
+                </Grid>
               </Grid>
             </Grid>
+            <Grid item>
+              <AddButton onAdd={handleForm} />
+            </Grid>
+            <Grid item xs={12}>
+              <TaskList
+                todos={filter === 'all' ? searchTodos : filterTodos}
+                setTodos={setTodos}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TaskList
-              todos={filter === 'all' ? searchTodos : filterTodos}
-              setTodos={setTodos}
+          <AddFormDialog
+            open={openForm}
+            onClose={handleForm}
+            onCreate={onCreate}
+          />
+          {showNoti && (
+            <NotificationAlert
+              open={showNoti}
+              txtAction="Create task"
+              onClose={() => setShow(false)}
             />
-          </Grid>
-        </Grid>
-        <AddFormDialog
-          open={openForm}
-          onClose={handleCloseForm}
-          createTodo={onCreate}
-        />
-      </Box>
-    </Container>
+          )}
+        </Box>
+      </Container>
+    </>
   )
 }

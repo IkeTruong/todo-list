@@ -13,10 +13,12 @@ import FormLabel from '@mui/material/FormLabel'
 import Typography from '@mui/material/Typography'
 
 export default function RadioController(props) {
-  const { name, label, control, options } = props
+  const { name, label, control, options, ...rest } = props
   return (
     <FormControl>
-      <FormLabel required>{label}</FormLabel>
+      <FormLabel required>
+        <b>{label}</b>
+      </FormLabel>
       <Controller
         name={name}
         control={control}
@@ -34,6 +36,7 @@ export default function RadioController(props) {
                   value={item}
                   control={<Radio />}
                   label={_upperFirst(item)}
+                  {...rest}
                 />
               ))}
             </RadioGroup>

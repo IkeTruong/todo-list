@@ -28,7 +28,7 @@ export default function CompletionStatus(props) {
 
   return (
     <div>
-      <Typography variant="body2" component="span">
+      <Typography variant="body2" component="span" color="text.secondary">
         <b>Completion status: </b>
       </Typography>
       <Chip

@@ -13,7 +13,7 @@ import { priorityOpts, statusOpts } from 'src/assets/variables'
 import { validationSchema } from 'src/assets/scheme'
 
 export default function AddFormDialog(props) {
-  const { open, onClose, createTodo } = props
+  const { open, onClose, onCreate } = props
   const defaultValues = {
     title: '',
     description: '',
@@ -27,7 +27,7 @@ export default function AddFormDialog(props) {
 
   const onSubmit = (evt) => {
     const newTask = _merge(evt, { id: uuidv4() })
-    createTodo(newTask)
+    onCreate(newTask)
     reset(defaultValues)
     onClose()
   }
@@ -66,8 +66,7 @@ export default function AddFormDialog(props) {
 }
 
 AddFormDialog.propTypes = {
-  idEdit: PropTypes.bool,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  handleChange: PropTypes.func,
+  onCreate: PropTypes.func,
 }

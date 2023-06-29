@@ -22,7 +22,7 @@ export default function Priority(props) {
   }
   return (
     <div>
-      <Typography variant="body2" component="span">
+      <Typography variant="body2" component="span" color="text.secondary">
         <b>Priority: </b>
       </Typography>
       <Chip
