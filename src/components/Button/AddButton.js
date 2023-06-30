@@ -5,14 +5,14 @@ import AddIcon from '@mui/icons-material/Add'
 import { NormalizeButton } from './NormalizeButton'
 
 export default function AddButton(props) {
-  const { onAdd } = props
+  const { onClick } = props
   return (
     <NormalizeButton
       color="info"
       disableElevation
       variant="contained"
       startIcon={<AddIcon />}
-      onClick={onAdd}
+      onClick={onClick}
     >
       Add New Task
     </NormalizeButton>
@@ -20,5 +20,5 @@ export default function AddButton(props) {
 }
 
 AddButton.propTypes = {
-  onAdd: PropTypes.func,
+  onClick: PropTypes.func,
 }

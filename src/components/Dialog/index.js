@@ -81,3 +81,12 @@ export default function CustomDialog(props) {
     </StyledDialog>
   )
 }
+
+CustomDialog.propTypes = {
+  open: PropTypes.bool,
+  title: PropTypes.string,
+  txtBtn: PropTypes.string,
+  content: PropTypes.node,
+  handleSubmit: PropTypes.func,
+  onClose: PropTypes.func,
+}

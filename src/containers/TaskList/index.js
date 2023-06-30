@@ -1,10 +1,10 @@
-import React, { useState, memo } from 'react'
+import React, { memo, useState } from 'react'
 import {
   AutoSizer,
-  List,
-  InfiniteLoader,
   CellMeasurer,
   CellMeasurerCache,
+  InfiniteLoader,
+  List,
 } from 'react-virtualized'
 
 import _get from 'lodash/get'
@@ -36,9 +36,7 @@ function TaskList(props) {
   const [txtAction, setTxt] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const isRowLoaded = ({ index }) => {
-    return !!todos[index]
-  }
+  const isRowLoaded = ({ index }) => !!todos[index]
 
   const loadMoreRows = () => {
     if (isLoading) {
@@ -81,6 +79,7 @@ function TaskList(props) {
   const onCloseFormEdit = () => {
     setFormEdit(false)
   }
+
   const onEdit = () => {
     setFormEdit(false)
   }
@@ -126,34 +125,28 @@ function TaskList(props) {
       >
         {({ measure }) => (
           <div style={style}>
-            {isRowLoaded({ index }) ? (
-              <TaskCard
-                measure={measure}
-                index={index}
-                title={_get(todo, 'title')}
-                description={_get(todo, 'description')}
-                priority={_get(todo, 'priority')}
-                completionStatus={_get(todo, 'completionStatus')}
-                actions={
-                  <React.Fragment>
-                    <EditButton
-                      onFormEdit={() => onOpenFormEdit(_get(todo, 'id'))}
-                    />
-                    <DeleteButton
-                      onConfirm={() => onOpenDelDialog(_get(todo, 'id'), index)}
-                    />
-                  </React.Fragment>
-                }
-                onEditPriority={() =>
-                  onOpenFormEdit(_get(todos[index], 'id'), 'ePriority')
-                }
-                onEditStatus={() =>
-                  onOpenFormEdit(_get(todos[index], 'id'), 'eStatus')
-                }
-              />
-            ) : (
-              <div>loading...</div>
-            )}
+            <TaskCard
+              measure={measure}
+              index={index}
+              title={_get(todo, 'title')}
+              description={_get(todo, 'description')}
+              priority={_get(todo, 'priority')}
+              completionStatus={_get(todo, 'completionStatus')}
+              actions={
+                <React.Fragment>
+                  <EditButton
+                    onClick={() => onOpenFormEdit(_get(todo, 'id'))}
+                  />
+                  <DeleteButton
+                    onClick={() => onOpenDelDialog(_get(todo, 'id'), index)}
+                  />
+                </React.Fragment>
+              }
+              onEditPriority={() =>
+                onOpenFormEdit(_get(todo, 'id'), 'ePriority')
+              }
+              onEditStatus={() => onOpenFormEdit(_get(todo, 'id'), 'eStatus')}
+            />
           </div>
         )}
       </CellMeasurer>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PropTypes } from 'prop-types'
 
 import Box from '@mui/material/Box'
@@ -53,11 +53,11 @@ export default function TaskCard(props) {
               <Stack spacing={1}>
                 <Stack direction="row" spacing={1}>
                   <Priority priority={priority} />
-                  <EditButton size="small" onFormEdit={onEditPriority} />
+                  <EditButton size="small" onClick={onEditPriority} />
                 </Stack>
                 <Stack direction="row" spacing={1}>
                   <CompletionStatus completionStatus={completionStatus} />
-                  <EditButton size="small" onFormEdit={onEditStatus} />
+                  <EditButton size="small" onClick={onEditStatus} />
                 </Stack>
               </Stack>
             </Grid>
@@ -77,5 +77,6 @@ TaskCard.propTypes = {
   actions: PropTypes.node,
   onEditPriority: PropTypes.func,
   onEditStatus: PropTypes.func,
-  ref: PropTypes.object,
+  measure: PropTypes.func,
+  index: PropTypes.number,
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import _filter from 'lodash/filter'
 
@@ -22,6 +22,7 @@ export default function App() {
   const [todos, setTodos] = useState([])
   const [filter, setCondFilter] = useState('all')
   const [showNoti, setShow] = useState(false)
+
   // function open/close create task form
   const handleForm = () => {
     setOpenForm(!openForm)
@@ -52,7 +53,7 @@ export default function App() {
   // todo list filter by status
   const filterTodos = _filter(
     searchTodos || dataLocalStorage,
-    (todo) => todo.completionStatus === filter
+    (todo) => todo.completionStatus === filter,
   )
 
   // function reset search, filter value
@@ -65,6 +66,7 @@ export default function App() {
   const onClear = () => {
     setQuery('')
   }
+
   // listen if has data in localstorage, set data
   useEffect(() => {
     const todos = JSON.parse(localStorage.getItem('todo-list'))
@@ -112,7 +114,7 @@ export default function App() {
               </Grid>
             </Grid>
             <Grid item>
-              <AddButton onAdd={handleForm} />
+              <AddButton onClick={handleForm} />
             </Grid>
             <Grid item xs={12}>
               <TaskList

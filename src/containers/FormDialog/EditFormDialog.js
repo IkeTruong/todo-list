@@ -84,8 +84,9 @@ function CustomizedDialogs(props) {
 export default CustomizedDialogs
 
 CustomizedDialogs.propTypes = {
-  idEdit: PropTypes.bool,
+  editType: PropTypes.string,
+  taskInfo: PropTypes.object,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  handleChange: PropTypes.func,
+  updateTodo: PropTypes.bool,
 }

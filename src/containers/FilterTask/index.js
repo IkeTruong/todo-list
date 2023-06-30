@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import _upperFirst from 'lodash/upperFirst'
 import _map from 'lodash/map'
 
@@ -26,4 +28,9 @@ export default function FilterTask({ filter, setCondFilter }) {
       </Select>
     </FormControl>
   )
+}
+
+FilterTask.propTypes = {
+  filter: PropTypes.string,
+  setCondFilter: PropTypes.func,
 }

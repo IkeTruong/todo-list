@@ -35,6 +35,7 @@ export default function NotificationAlert(props) {
   )
 }
 NotificationAlert.propTypes = {
+  open: PropTypes.bool,
   txtAction: PropTypes.string,
   onClose: PropTypes.func,
 }

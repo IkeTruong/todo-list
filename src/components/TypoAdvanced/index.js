@@ -45,7 +45,6 @@ const TypoAdvanced = ({
             cursor: isLink ? 'pointer' : undefined,
           },
         },
-        // cắt dòng
         ...(line
           ? {
               overflow: 'hidden',

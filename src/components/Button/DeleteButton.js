@@ -7,10 +7,10 @@ import Tooltip from '@mui/material/Tooltip'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 export default function DeleteButton(props) {
-  const { onConfirm } = props
+  const { onClick } = props
   return (
     <Tooltip title="Delete">
-      <IconButton aria-label="delete" onClick={onConfirm}>
+      <IconButton aria-label="delete" onClick={onClick}>
         <DeleteIcon fontSize="inherit" />
       </IconButton>
     </Tooltip>
@@ -18,5 +18,5 @@ export default function DeleteButton(props) {
 }
 
 DeleteButton.propTypes = {
-  onConfirm: PropTypes.func,
+  onClick: PropTypes.func,
 }

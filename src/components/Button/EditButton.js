@@ -7,10 +7,10 @@ import Tooltip from '@mui/material/Tooltip'
 import EditIcon from '@mui/icons-material/Edit'
 
 export default function EditButton(props) {
-  const { onFormEdit, ...rest } = props
+  const { onClick, ...rest } = props
   return (
     <Tooltip title="Edit">
-      <IconButton aria-label="edit" onClick={onFormEdit} {...rest}>
+      <IconButton aria-label="edit" onClick={onClick} {...rest}>
         <EditIcon fontSize="inherit" />
       </IconButton>
     </Tooltip>
@@ -18,5 +18,5 @@ export default function EditButton(props) {
 }
 
 EditButton.propTypes = {
-  onFormEdit: PropTypes.func,
+  onClick: PropTypes.func,
 }

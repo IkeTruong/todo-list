@@ -13,9 +13,11 @@
           "error",
           {
             "printWidth": 80,
-            "trailingComma": "es5",
+            "trailingComma": "all",
             "semi": false,
             "singleQuote": true,
+            "endOfLine": "auto",
+            "useTabs": false,
             "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
           }
       ],
