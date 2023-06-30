@@ -102,6 +102,7 @@ export default function App() {
                 <Grid item>
                   <NormalizeButton
                     variant="contained"
+                    color="info"
                     disableElevation
                     onClick={onReset}
                   >

@@ -1,11 +1,15 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, memo } from 'react'
-import { List, AutoSizer } from 'react-virtualized'
+import {
+  AutoSizer,
+  List,
+  InfiniteLoader,
+  CellMeasurer,
+  CellMeasurerCache,
+} from 'react-virtualized'
 
 import _get from 'lodash/get'
 import _filter from 'lodash/filter'
 
-import Divider from '@mui/material/Divider'
 import TaskCard from 'src/components/TaskCard'
 import DeleteDialog from 'src/containers/FormDialog/DeleteDialog'
 import EditFormDialog from 'src/containers/FormDialog/EditFormDialog'
@@ -16,6 +20,11 @@ import NotificationAlert from 'src/components/NotificationAlert'
 
 import { whiteLightColor } from 'src/assets/variables'
 
+const cache = new CellMeasurerCache({
+  defaultHeight: 85,
+  fixedWidth: true,
+})
+
 function TaskList(props) {
   const { todos, setTodos } = props
   const [openDelDialog, setDelDialog] = useState(false)
@@ -25,6 +34,29 @@ function TaskList(props) {
   const [editType, setEditType] = useState(null)
   const [showNoti, setShow] = useState(false)
   const [txtAction, setTxt] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const isRowLoaded = ({ index }) => {
+    return !!todos[index]
+  }
+
+  const loadMoreRows = () => {
+    if (isLoading) {
+      Promise.resolve()
+    } else
+      Promise.resolve().then(() => {
+        setIsLoading(true)
+        const prevTodos = todos
+        const nextTodos = [...prevTodos, ...todos]
+
+        setTimeout(() => {
+          setIsLoading(false)
+          setTodos(nextTodos)
+        }, 600)
+      })
+  }
+
+  const infiniteRowCount = () => (!isLoading ? todos.length + 1 : todos.length)
 
   // function open modal delete task
   const onOpenDelDialog = (id, index) => {
@@ -82,56 +114,81 @@ function TaskList(props) {
   const taskDetail = _filter(todos, (todo) => todo.id === id)[0]
 
   // Each item in list of react-virtualize
-  const rowRenderer = ({ index, key, style }) => {
+  const rowRenderer = ({ index, key, parent, style }) => {
+    const todo = todos[index]
     return (
-      <div key={key} style={style}>
-        <TaskCard
-          title={_get(todos[index], 'title')}
-          description={_get(todos[index], 'description')}
-          priority={_get(todos[index], 'priority')}
-          completionStatus={_get(todos[index], 'completionStatus')}
-          actions={
-            <React.Fragment>
-              <EditButton
-                onFormEdit={() => onOpenFormEdit(_get(todos[index], 'id'))}
-              />
-              <DeleteButton
-                onConfirm={() =>
-                  onOpenDelDialog(_get(todos[index], 'id'), index)
+      <CellMeasurer
+        key={key}
+        cache={cache}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+      >
+        {({ measure }) => (
+          <div style={style}>
+            {isRowLoaded({ index }) ? (
+              <TaskCard
+                measure={measure}
+                index={index}
+                title={_get(todo, 'title')}
+                description={_get(todo, 'description')}
+                priority={_get(todo, 'priority')}
+                completionStatus={_get(todo, 'completionStatus')}
+                actions={
+                  <React.Fragment>
+                    <EditButton
+                      onFormEdit={() => onOpenFormEdit(_get(todo, 'id'))}
+                    />
+                    <DeleteButton
+                      onConfirm={() => onOpenDelDialog(_get(todo, 'id'), index)}
+                    />
+                  </React.Fragment>
+                }
+                onEditPriority={() =>
+                  onOpenFormEdit(_get(todos[index], 'id'), 'ePriority')
+                }
+                onEditStatus={() =>
+                  onOpenFormEdit(_get(todos[index], 'id'), 'eStatus')
                 }
               />
-            </React.Fragment>
-          }
-          onEditPriority={() =>
-            onOpenFormEdit(_get(todos[index], 'id'), 'ePriority')
-          }
-          onEditStatus={() =>
-            onOpenFormEdit(_get(todos[index], 'id'), 'eStatus')
-          }
-        />
-      </div>
+            ) : (
+              <div>loading...</div>
+            )}
+          </div>
+        )}
+      </CellMeasurer>
     )
   }
 
   return (
     <React.Fragment>
       {todos.length > 0 ? (
-        <AutoSizer style={{ height: 'calc(100vh - 272px)' }}>
-          {({ width, height }) => (
-            <List
-              width={width}
-              height={height}
-              rowHeight={109}
-              rowRenderer={rowRenderer}
-              rowCount={todos.length}
-              overscanRowCount={3}
-              style={{
-                border: `thin solid ${whiteLightColor}`,
-                borderRadius: 5,
-              }}
-            />
+        <InfiniteLoader
+          isRowLoaded={isRowLoaded}
+          loadMoreRows={loadMoreRows}
+          rowCount={infiniteRowCount()}
+          threshold={0}
+          minimumBatchSize={1}
+        >
+          {() => (
+            <AutoSizer style={{ height: 'calc(100vh - 272px)' }}>
+              {({ width, height }) => (
+                <List
+                  width={width}
+                  height={height}
+                  rowHeight={cache.rowHeight}
+                  rowRenderer={rowRenderer}
+                  rowCount={todos.length}
+                  overscanRowCount={3}
+                  style={{
+                    border: `thin solid ${whiteLightColor}`,
+                    borderRadius: 5,
+                  }}
+                />
+              )}
+            </AutoSizer>
           )}
-        </AutoSizer>
+        </InfiniteLoader>
       ) : (
         <EmptyData />
       )}
@@ -159,7 +216,7 @@ function TaskList(props) {
       {showNoti && (
         <NotificationAlert
           open={showNoti}
-          txtAction="Create task"
+          txtAction={txtAction}
           onClose={() => setShow(false)}
         />
       )}
