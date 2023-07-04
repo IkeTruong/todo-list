@@ -10,19 +10,19 @@ export default function CompletionStatus(props) {
   const compStatus = {
     todo: {
       name: 'Todo',
-      color: 'default',
+      color: 'linear-gradient(to left, #232526, #414345)',
     },
     processing: {
       name: 'Processing',
-      color: 'info',
+      color: 'linear-gradient(to top, #56ccf2, #2f80ed)',
     },
     pending: {
       name: 'Pending',
-      color: 'warning',
+      color: 'linear-gradient(to right, #ff512f, #f09819)',
     },
     done: {
       name: 'Done',
-      color: 'success',
+      color: 'linear-gradient(to right, #56ab2f, #a8e063)',
     },
   }
 
@@ -34,7 +34,10 @@ export default function CompletionStatus(props) {
       <Chip
         size="small"
         label={_get(compStatus, `${completionStatus}.name`)}
-        color={_get(compStatus, `${completionStatus}.color`)}
+        style={{
+          background: _get(compStatus, `${completionStatus}.color`),
+          color: '#fff',
+        }}
       />
     </div>
   )

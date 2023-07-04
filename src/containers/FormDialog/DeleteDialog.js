@@ -30,13 +30,13 @@ export default function DeleteDialog(props) {
           variant="contained"
           color="inherit"
           disableElevation
+          hasGradient={false}
           onClick={onCancel}
         >
           Cancel
         </NormalizeButton>
         <NormalizeButton
           variant="contained"
-          color="info"
           disableElevation
           onClick={onDelete}
         >

@@ -9,17 +9,18 @@ export default function Priority(props) {
   const prio = {
     high: {
       name: 'High',
-      color: 'error',
+      color: 'linear-gradient(to right, #cb2d3e, #ef473a)',
     },
     medium: {
       name: 'Medium',
-      color: 'warning',
+      color: 'linear-gradient(to right, #ff512f, #f09819)',
     },
     low: {
       name: 'Low',
-      color: 'success',
+      color: 'linear-gradient(to right, #56ab2f, #a8e063)',
     },
   }
+
   return (
     <div>
       <Typography variant="body2" component="span" color="text.secondary">
@@ -28,7 +29,7 @@ export default function Priority(props) {
       <Chip
         size="small"
         label={_get(prio, `${priority}.name`)}
-        color={_get(prio, `${priority}.color`)}
+        style={{ background: _get(prio, `${priority}.color`), color: '#fff' }}
       />
     </div>
   )
