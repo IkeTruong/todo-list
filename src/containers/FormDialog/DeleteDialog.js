@@ -30,7 +30,7 @@ export default function DeleteDialog(props) {
           variant="contained"
           color="inherit"
           disableElevation
-          hasGradient={false}
+          hasgradient="false"
           onClick={onCancel}
         >
           Cancel

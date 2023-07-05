@@ -88,5 +88,5 @@ CustomizedDialogs.propTypes = {
   taskInfo: PropTypes.object,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  updateTodo: PropTypes.bool,
+  updateTodo: PropTypes.func,
 }

@@ -1,9 +1,10 @@
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 
-export const NormalizeButton = styled(Button)(({ hasGradient = true }) => ({
+export const NormalizeButton = styled(Button)(({ hasgradient = 'true' }) => ({
   textTransform: 'capitalize',
-  background: hasGradient
-    ? 'linear-gradient(to top, #56ccf2, #2f80ed)'
-    : undefined,
+  background:
+    hasgradient === 'true'
+      ? 'linear-gradient(to top, #56ccf2, #2f80ed)'
+      : undefined,
 }))

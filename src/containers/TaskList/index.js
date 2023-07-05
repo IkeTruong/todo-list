@@ -9,6 +9,7 @@ import {
 
 import _get from 'lodash/get'
 import _filter from 'lodash/filter'
+import _findIndex from 'lodash/findIndex'
 
 import TaskCard from 'src/components/TaskCard'
 import DeleteDialog from 'src/containers/FormDialog/DeleteDialog'
@@ -30,7 +31,7 @@ function TaskList(props) {
   const [openDelDialog, setDelDialog] = useState(false)
   const [openFormEdit, setFormEdit] = useState(false)
   const [id, setId] = useState('')
-  const [index, setIndex] = useState('')
+  // const [index, setIndex] = useState('')
   const [editType, setEditType] = useState(null)
   const [showNoti, setShow] = useState(false)
   const [txtAction, setTxt] = useState('')
@@ -57,10 +58,9 @@ function TaskList(props) {
   const infiniteRowCount = () => (!isLoading ? todos.length + 1 : todos.length)
 
   // function open modal delete task
-  const onOpenDelDialog = (id, index) => {
+  const onOpenDelDialog = (id) => {
     setDelDialog(true)
     setId(id)
-    setIndex(index)
   }
 
   // function close modal delete task
@@ -87,7 +87,8 @@ function TaskList(props) {
   const dataRoot = JSON.parse(localStorage.getItem('todo-list'))
 
   // function delete item
-  const onDelete = (id, index) => {
+  const onDelete = (id) => {
+    const index = _findIndex(dataRoot, (d) => d.id === id)
     setDelDialog(false)
     setTodos(_filter(dataRoot, (todo) => todo.id !== id))
     setTxt('Delete task')
@@ -202,7 +203,7 @@ function TaskList(props) {
           open={openDelDialog}
           taskTitle={_get(taskDetail, 'title')}
           onCancel={onCloseDelDialog}
-          onDelete={() => onDelete(id, index)}
+          onDelete={() => onDelete(id)}
         />
       )}
 
