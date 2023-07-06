@@ -12,7 +12,7 @@ import { priorityOpts, statusOpts } from 'src/assets/variables'
 import { validationSchema } from 'src/assets/scheme'
 
 function CustomizedDialogs(props) {
-  const { open, onClose, taskInfo, updateTodo, editType } = props
+  const { open, onClose, taskInfo, idColumn, onUpdate, editType = null } = props
   const { handleSubmit, control, reset } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
@@ -24,7 +24,7 @@ function CustomizedDialogs(props) {
   })
 
   const onSubmit = (evt) => {
-    updateTodo(_get(taskInfo, 'id'), evt)
+    onUpdate({ idColumn, idTask: _get(taskInfo, 'id') }, evt)
     onClose()
   }
 
@@ -88,5 +88,5 @@ CustomizedDialogs.propTypes = {
   taskInfo: PropTypes.object,
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  updateTodo: PropTypes.func,
+  onUpdate: PropTypes.func,
 }

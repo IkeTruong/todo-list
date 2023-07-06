@@ -1,15 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useTheme } from '@mui/material/styles'
+
 import _get from 'lodash/get'
-import Chip from '@mui/material/Chip'
-import Typography from '@mui/material/Typography'
+
+import Box from '@mui/material/Box'
+import TypoAdvanced from '../TypoAdvanced'
 
 export default function Priority(props) {
   const { priority } = props
+  const theme = useTheme()
   const prio = {
     high: {
       name: 'High',
-      color: 'linear-gradient(to right, #cb2d3e, #ef473a)',
+      color: 'linear-gradient(to right, #ff416c, #ff4b2b)',
     },
     medium: {
       name: 'Medium',
@@ -20,18 +24,14 @@ export default function Priority(props) {
       color: 'linear-gradient(to right, #56ab2f, #a8e063)',
     },
   }
+  // style = {{ background: _get(prio, `${priority}.color`), color: '#fff' }
 
   return (
-    <div>
-      <Typography variant="body2" component="span" color="text.secondary">
-        <b>Priority: </b>
-      </Typography>
-      <Chip
-        size="small"
-        label={_get(prio, `${priority}.name`)}
-        style={{ background: _get(prio, `${priority}.color`), color: '#fff' }}
-      />
-    </div>
+    <Box component="span" color={theme.palette.common.white}>
+      <TypoAdvanced variant="caption">
+        {_get(prio, `${priority}.name`)}
+      </TypoAdvanced>
+    </Box>
   )
 }
 
