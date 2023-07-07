@@ -3,6 +3,7 @@ export const midnightColor = 'linear-gradient(to left, #232526, #414345)'
 export const blueSkiesColor = 'linear-gradient(to top, #56ccf2, #2f80ed)'
 export const lushColor = 'linear-gradient(to right, #56ab2f, #a8e063)'
 export const sunriseColor = 'linear-gradient(to right, #ff512f, #f09819)'
+export const quepalColor = 'linear-gradient(to right, #11998e, #38ef7d)'
 export const dragColor = '#263B4A'
 
 // box shadow

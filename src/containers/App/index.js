@@ -23,6 +23,7 @@ import FilterTask from 'src/containers/FilterTask'
 import AddFormDialog from 'src/containers/FormDialog/AddFormDialog'
 import EditFormDialog from 'src/containers/FormDialog/EditFormDialog'
 import DeleteDialog from 'src/containers/FormDialog/DeleteDialog'
+import NotificationAlert from 'src/components/NotificationAlert'
 
 import { NormalizeButton } from 'src/components/Button/NormalizeButton'
 import { TitleTypography } from 'src/components/TypoAdvanced/TitleTypography'
@@ -42,6 +43,8 @@ export default function App() {
   const [openEditModal, setEditModal] = useState(false)
   const [id, setId] = useState(null)
   const [query, setQuery] = useState('')
+  const [alert, setAlert] = useState(false)
+  const [txt, setTxt] = useState(false)
   const [filter, setCondFilter] = useState('all')
 
   let containerRef = useRef(null)
@@ -66,6 +69,8 @@ export default function App() {
     todoStore.splice(index, 1)
     localStorage.setItem('todo-list', JSON.stringify(todoStore))
     setDelModal(false)
+    setAlert(true)
+    setTxt('Delete')
   }
   /*==========Block Actions Delete==========*/
 
@@ -85,6 +90,8 @@ export default function App() {
       return todo
     })
     setColumns(updatedTodos)
+    setAlert(true)
+    setTxt('Update')
     localStorage.setItem('todo-list', JSON.stringify(updatedTodos))
   }
   /*==========Block Actions Edit==========*/
@@ -95,6 +102,8 @@ export default function App() {
   }
   const onCreate = (newTodo) => {
     setColumns([newTodo, ...columns])
+    setAlert(true)
+    setTxt('Create')
     localStorage.setItem('todo-list', JSON.stringify([newTodo, ...columns]))
   }
   /*==========Block Actions Create==========*/
@@ -296,8 +305,8 @@ export default function App() {
                             className={`column column__${index + 1}`}
                             sx={{
                               background: _get(column, 'bgColor'),
-                              '-webkit-background-clip': 'text',
-                              '-webkit-text-fill-color': 'transparent',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
                             }}
                           >
                             <b>{_upperFirst(column.name)}</b>
@@ -333,6 +342,13 @@ export default function App() {
         onClose={onCloseEditModal}
         onUpdate={onUpdate}
       />
+      {alert && (
+        <NotificationAlert
+          open={alert}
+          onClose={() => setAlert(false)}
+          txtAction={txt}
+        />
+      )}
     </Box>
   )
 }

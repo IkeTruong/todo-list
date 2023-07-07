@@ -6,6 +6,8 @@ import Snackbar from '@mui/material/Snackbar'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
+import { quepalColor } from 'src/assets/variables'
+
 export default function NotificationAlert(props) {
   const { open, txtAction, onClose } = props
   return (
@@ -17,7 +19,7 @@ export default function NotificationAlert(props) {
     >
       <Alert
         variant="filled"
-        severity="success"
+        sx={{ background: quepalColor }}
         action={
           <IconButton
             aria-label="close"

@@ -14,7 +14,6 @@ export default function TaskList(props) {
 
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('lg'))
-  console.log('matches', matches)
   return (
     <>
       <Droppable droppableId={columnId} key={columnId}>

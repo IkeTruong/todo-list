@@ -9,6 +9,6 @@ export const TitleTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.common.white,
   fontWeight: 700,
   padding: 'calc(calc(1em / 16) / 2)',
-  '-webkit-text-stroke-color': 'transparent',
-  '-webkit-text-stroke-width': 'calc(1em / 16)',
+  WebkitTextStrokeColor: 'transparent',
+  WebkitTextStrokeWidth: 'calc(1em / 16)',
 }))
