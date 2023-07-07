@@ -3,4 +3,5 @@ import { styled } from '@mui/material/styles'
 
 export const NormalizeButton = styled(Button)(() => ({
   textTransform: 'capitalize',
+  borderRadius: 50,
 }))

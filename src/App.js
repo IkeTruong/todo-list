@@ -1,5 +1,4 @@
-// import AppContainer from 'src/containers/App'
-import AppContainer from 'src/containers/App/index-v2'
+import AppContainer from 'src/containers/App'
 
 export default function App() {
   return <AppContainer />
