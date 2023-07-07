@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useTheme } from '@mui/material/styles'
 
@@ -46,11 +46,6 @@ export default function App() {
   const [alert, setAlert] = useState(false)
   const [txt, setTxt] = useState(false)
   const [filter, setCondFilter] = useState('all')
-
-  let containerRef = useRef(null)
-  let curYPos = 0
-  let curXPos = 0
-  let curDown = false
 
   const todoStore = JSON.parse(localStorage.getItem('todo-list')) || []
   const taskInfo = _filter(todoStore, (task) => task.id === id)[0]
@@ -137,30 +132,6 @@ export default function App() {
     setQuery('')
   }
   /*==========Block Actions Reset==========*/
-
-  /*==========Block Actions Mouse==========*/
-  const mouseMoveHandler = (e) => {
-    if (curDown === true && containerRef.current) {
-      window.scrollTo(
-        containerRef.current.scrollLeft + (curXPos - e.pageX),
-        containerRef.current.scrollTop + (curYPos - e.pageY),
-      )
-    }
-  }
-
-  const mouseDownHandler = (e) => {
-    var target = e.target
-    if (target.classList[0] !== 'stack__item') {
-      curDown = true
-      curYPos = e.pageY
-      curXPos = e.pageX
-    }
-  }
-
-  const mouseUpHandler = () => {
-    curDown = false
-  }
-  /*==========Block Actions Mouse==========*/
 
   /*==========Block Actions Handle Data==========*/
   const filterData = (type) =>
@@ -273,10 +244,6 @@ export default function App() {
         </Grid>
         <Grid item xs={12}>
           <Box
-            onMouseMove={mouseMoveHandler}
-            onMouseDown={mouseDownHandler}
-            onMouseUp={mouseUpHandler}
-            ref={containerRef}
             bgcolor={theme.palette.grey[200]}
             borderRadius={2}
             paddingX={2}
